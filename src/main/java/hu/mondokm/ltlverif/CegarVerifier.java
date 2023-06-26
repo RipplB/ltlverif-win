@@ -21,7 +21,7 @@ import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
 
 public class CegarVerifier {
 
-    private static TraceChecker checker=TraceChecker.create(True(),True(), Z3SolverFactory.getInstace().createItpSolver());
+    private static TraceChecker checker=TraceChecker.create(True(),True(), Z3SolverFactory.getInstance().createItpSolver());
     private static JoiningPrecRefiner<ExprState, ExprAction,PredPrec, ItpRefutation> refiner=JoiningPrecRefiner.create(new ItpRefToPredPrec(ExprSplitters.atoms()));
 
 
@@ -31,7 +31,7 @@ public class CegarVerifier {
         boolean cexFound=true;
         boolean cexFeasible=false;
         while(cexFound && !cexFeasible){
-            System.out.println(precision);
+            System.out.println("Precision: " + precision);
             InfTrace trace=abstractor.check(precision);
             if(trace==null) cexFound=false;
             else {
@@ -41,7 +41,7 @@ public class CegarVerifier {
                     precision=precision.join(prec);
                 }
                 if(status.isFeasible()){
-                    System.out.println(status.asFeasible().getValuations());
+                    System.out.println("Status is feasible, valuations: " + status.asFeasible().getValuations());
                     cexFeasible=true;
                 }
             }

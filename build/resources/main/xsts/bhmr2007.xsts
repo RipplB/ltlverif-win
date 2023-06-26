@@ -1,0 +1,30 @@
+var i : integer
+var a : integer
+var b : integer
+var n : integer
+var error : boolean
+
+choice {
+    assume i<n;
+    choice{
+        a:=a+1;
+        b:=b+2;
+    } or {
+        a:=a+2;
+        b:=b+1;
+    }
+    i:=i+1;
+} or {
+    assume !(i<n);
+    assume !(a+b==3*n);
+    error:=true;
+}
+
+choice {
+	i:=0;
+	a:=0;
+    b:=0;
+    havoc n;
+    assume n>=0;
+    error:=false;
+}

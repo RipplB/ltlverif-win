@@ -7,7 +7,6 @@ import hu.bme.mit.theta.analysis.pred.PredPrec;
 import hu.bme.mit.theta.analysis.pred.PredState;
 import hu.bme.mit.theta.analysis.unit.UnitState;
 import hu.bme.mit.theta.cfa.CFA;
-import hu.bme.mit.theta.cfa.analysis.CfaAction;
 import hu.mondokm.ltlverif.cfa.CfaBuchiTransFunc;
 import hu.mondokm.ltlverif.buchi.BuchiAction;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
@@ -63,7 +62,7 @@ public class NDFSAbstractor implements LtlAbstractor {
         redblue.clear();
 
         dfs_blue(sut.getInitialState(automaton.getInitial()));
-        System.out.println(blueVisited+" "+redVisited);
+        System.out.println(String.format("Blue visited: %d | Red visited: %d", blueVisited, redVisited));
         return result;
     }
 

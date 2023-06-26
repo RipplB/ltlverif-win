@@ -1,0 +1,19 @@
+var i : integer
+var j : integer
+var error : boolean
+
+choice {
+    assume j>=i;
+    i:=i+2;
+    j:=-1+j;
+} or {
+    assume !(j>=i);
+    assume !(j==6);
+    error:=true;
+}
+
+choice {
+	i:=1;
+	j:=10;
+    error:=false;
+}

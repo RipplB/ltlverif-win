@@ -25,6 +25,13 @@ import java.util.List;
 import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Eq;
 import static hu.bme.mit.theta.core.type.inttype.IntExprs.Int;
 
+import owl.automaton.Automaton;
+import owl.automaton.acceptance.BuchiAcceptance;
+import owl.automaton.hoa.HoaWriter;
+import owl.ltl.LabelledFormula;
+import owl.ltl.parser.LtlParser;
+import owl.translations.ltl2nba.SymmetricNBAConstruction;
+
 public class MainProgram {
 
     public static void main(String[] args){
@@ -32,7 +39,7 @@ public class MainProgram {
             long startTime = System.currentTimeMillis();
             long beforeUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
 
-            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true_err.cfa");
+            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_false_err.cfa");
             CFA cfa = CfaDslManager.createCfa(inputStream);
             HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
             for(VarDecl decl:cfa.getVars()){
@@ -67,16 +74,22 @@ public class MainProgram {
             System.out.println(ltlExpr);
             System.out.println(toStringVisitor.getAps().values());
 
-            ProcessBuilder processBuilder=new ProcessBuilder("/usr/bin/ltl2tgba","!("+ltlExpr+")", "-CB");
-            processBuilder.redirectOutput(new File("src/main/resources/automata/out.hoa"));
-            processBuilder.redirectError(new File("error.txt"));
-            Process process=processBuilder.start();
-            process.waitFor();
+            LabelledFormula formula = LtlParser.parse(ltlExpr).not();
+            System.out.println(formula);
+            Automaton oautomaton = SymmetricNBAConstruction.of(BuchiAcceptance.class).apply(formula);
 
+            String automatonStr = HoaWriter.toString(oautomaton);
+            System.out.println(automatonStr);
+    //            ProcessBuilder processBuilder=new ProcessBuilder("/usr/bin/ltl2tgba","!("+ltlExpr+")", "-CB");
+//            processBuilder.redirectOutput(new File("src/main/resources/automata/out.hoa"));
+//            processBuilder.redirectError(new File("error.txt"));
+//            Process process=processBuilder.start();
+//            process.waitFor();
+//
             AutomatonBuilder builder=new AutomatonBuilder();
             builder.setAps(toStringVisitor.getAps());
-            BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/out.hoa");
-
+//            BuchiAutomaton automaton=builder.parseAutomatonFromFile("src/main/resources/automata/out.hoa");
+            BuchiAutomaton automaton = builder.parseAutomatonFromString(automatonStr);
 
 
 //            boolean result=CegarVerifier.verifySUT(new XSTSSUT(xsts),automaton, PredPrec.of(toStringVisitor.getAps().values()));

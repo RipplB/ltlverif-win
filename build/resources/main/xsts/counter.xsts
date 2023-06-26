@@ -1,0 +1,25 @@
+var x : integer
+var y : integer
+var error : boolean
+
+choice {
+    assume x<100;
+    choice {
+        assume x<50;
+        x:=x+1;
+    } or {
+        assume !(x<50);
+        x:=x+1;
+        y:=y+1;
+    }
+} or {
+    assume !(x<100);
+    assume !(y==100);
+    error:=true;
+}
+
+choice {
+	x:=0;
+	y:=50;
+    error:=false;
+}

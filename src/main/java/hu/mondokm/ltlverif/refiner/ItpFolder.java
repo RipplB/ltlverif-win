@@ -8,7 +8,7 @@ import hu.bme.mit.theta.core.type.Expr;
 import hu.bme.mit.theta.core.type.Type;
 import hu.bme.mit.theta.core.type.anytype.RefExpr;
 import hu.bme.mit.theta.core.utils.PathUtils;
-import hu.bme.mit.theta.core.utils.VarIndexing;
+import hu.bme.mit.theta.core.utils.indexings.VarIndexing;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static hu.bme.mit.theta.core.type.anytype.Exprs.Prime;

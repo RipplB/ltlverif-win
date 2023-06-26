@@ -1,0 +1,16 @@
+main process cfa {
+	var b : bool
+
+	init loc L0
+    loc L1
+   	loc L2
+    final loc L3
+    error loc ERR
+
+	L0 -> L1 { b := true }
+    L1 -> L2 { assume b = true }
+    L2 -> L1 { assume b = true }
+    L1 -> L3 { assume not (b = true) }
+
+
+}

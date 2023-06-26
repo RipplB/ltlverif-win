@@ -9,7 +9,10 @@ import jhoafparser.consumer.HOAConsumer;
 import jhoafparser.consumer.HOAConsumerException;
 import jhoafparser.parser.HOAFParser;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,10 +46,22 @@ public class AutomatonBuilder implements HOAConsumer {
         this.aps=aps;
     }
 
-    public BuchiAutomaton parseAutomaton(String fileName){
-        automaton=new BuchiAutomaton();
+    public BuchiAutomaton parseAutomatonFromFile(String fileName){
+        try {
+            return parseAutomaton(new FileInputStream(fileName));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public BuchiAutomaton parseAutomatonFromString(String automaton){
+        return parseAutomaton(new ByteArrayInputStream(automaton.getBytes()));
+    }
+
+    private BuchiAutomaton parseAutomaton(InputStream is) {
+        automaton = new BuchiAutomaton();
         try{
-            HOAFParser.parseHOA(new FileInputStream(fileName), this);
+            HOAFParser.parseHOA(is, this);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -123,13 +138,16 @@ public class AutomatonBuilder implements HOAConsumer {
 
     @Override
     public void addState(int i, String s, BooleanExpression<AtomLabel> booleanExpression, List<Integer> list) throws HOAConsumerException {
-        if(states.get(new Integer(i))==null)states.put(new Integer(i),new BuchiState(i));
-        states.get(new Integer(i)).setAccepting(list!=null&&(!list.isEmpty()));
-//        System.out.println(i+" "+booleanExpression+", "+list);
+        if (states.get(i) == null) {
+            states.put(i, new BuchiState(i));
+        }
+        states.get(Integer.valueOf(i)).setAccepting(list != null && (!list.isEmpty()));
+        System.out.println(i+" "+booleanExpression+", "+list);
     }
 
     @Override
     public void addEdgeImplicit(int i, List<Integer> list, List<Integer> list1) throws HOAConsumerException {
+        System.out.println("addedgeimplicit called");
         /*for(Integer target:list){
             if(states.get(new Integer(target))==null)states.put(new Integer(target),new BuchiState());
             states.get(new Integer(i)).addTransition(True(),states.get(new Integer(target)));
@@ -140,9 +158,17 @@ public class AutomatonBuilder implements HOAConsumer {
     @Override
     public void addEdgeWithLabel(int i, BooleanExpression<AtomLabel> booleanExpression, List<Integer> list, List<Integer> list1) throws HOAConsumerException {
         for(Integer target:list){
-            if(states.get(new Integer(target))==null)states.put(new Integer(target),new BuchiState(target));
-            states.get(new Integer(i)).addTransition(toExpr(booleanExpression),states.get(new Integer(target)));
-            if(i==target && booleanExpression.isTRUE()) states.get(new Integer(i)).setHasLoop(true);
+            if (states.get(target) == null) {
+                states.put(target, new BuchiState(target));
+            }
+            states.get(i).addTransition(toExpr(booleanExpression), states.get(target));
+            if (i == target && booleanExpression.isTRUE()) {
+                states.get(i).setHasLoop(true);
+            }
+            if (list1 != null && !list1.isEmpty()) {
+                states.get(i).setAccepting(true);
+                System.out.println(String.format("State %d set to accepting", i));
+            }
         }
     }
 

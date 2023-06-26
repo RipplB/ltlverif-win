@@ -1,0 +1,81 @@
+type Main_region : { __Inactive__, Interrupted, Normal}
+type Interrupted : { __Inactive__, BlinkingYellow, Black}
+type Normal : { __Inactive__, Green, Red, Yellow}
+
+var PoliceInterrupt_police : boolean = false
+var LightCommands_displayGreen : boolean = false
+var LightCommands_displayNone : boolean = false
+var LightCommands_displayRed : boolean = false
+var LightCommands_displayYellow : boolean = false
+var Control_toggle : boolean = false
+var main_region : Main_region = __Inactive__
+var interrupted : Interrupted = __Inactive__
+var normal : Normal = __Inactive__
+var BlackTimeout3 : integer = 500
+var BlinkingYellowTimeout4 : integer = 500
+
+choice {
+	assume (((!(((main_region == Interrupted) && (PoliceInterrupt_police == true)))) && (((main_region == Interrupted) && (interrupted == BlinkingYellow)) && (500 <= BlinkingYellowTimeout4))) && (interrupted == BlinkingYellow));
+	next(interrupted) := Black;
+	next(BlackTimeout3) := 0;
+	next(LightCommands_displayNone) := true;
+} or {
+	assume (((!(((main_region == Interrupted) && (PoliceInterrupt_police == true)))) && (((main_region == Interrupted) && (interrupted == Black)) && (500 <= BlackTimeout3))) && (interrupted == Black));
+	next(interrupted) := BlinkingYellow;
+	next(BlinkingYellowTimeout4) := 0;
+	next(LightCommands_displayYellow) := true;
+} or {
+	assume (((!(((main_region == Normal) && (PoliceInterrupt_police == true)))) && (((main_region == Normal) && (normal == Yellow)) && (Control_toggle == true))) && (normal == Yellow));
+	next(normal) := Red;
+	next(LightCommands_displayRed) := true;
+} or {
+	assume (((!(((main_region == Normal) && (PoliceInterrupt_police == true)))) && (((main_region == Normal) && (normal == Green)) && (Control_toggle == true))) && (normal == Green));
+	next(normal) := Yellow;
+	next(LightCommands_displayYellow) := true;
+} or {
+	assume (((!(((main_region == Normal) && (PoliceInterrupt_police == true)))) && (((main_region == Normal) && (normal == Red)) && (Control_toggle == true))) && (normal == Red));
+	next(normal) := Green;
+	next(LightCommands_displayGreen) := true;
+} or {
+	assume ((((main_region == Normal) && (PoliceInterrupt_police == true))) && (main_region == Normal));
+	next(main_region) := Interrupted;
+	next(interrupted) := BlinkingYellow;
+	next(BlinkingYellowTimeout4) := 0;
+	next(LightCommands_displayYellow) := true;
+} or {
+	assume (((((main_region == Interrupted) && (PoliceInterrupt_police == true))) && (main_region == Interrupted)) && (normal == __Inactive__));
+	next(interrupted) := __Inactive__;
+	next(main_region) := Normal;
+	next(normal) := Red;
+	next(LightCommands_displayRed) := true;
+} or {
+	assume ((((((main_region == Interrupted) && (PoliceInterrupt_police == true))) && (main_region == Interrupted)) && !((normal == __Inactive__))) && (normal == Green));
+	next(interrupted) := __Inactive__;
+	next(main_region) := Normal;
+	next(LightCommands_displayGreen) := true;
+} or {
+	assume ((((((main_region == Interrupted) && (PoliceInterrupt_police == true))) && (main_region == Interrupted)) && !((normal == __Inactive__))) && (normal == Red));
+	next(interrupted) := __Inactive__;
+	next(main_region) := Normal;
+	next(LightCommands_displayRed) := true;
+} or {
+	assume ((((((main_region == Interrupted) && (PoliceInterrupt_police == true))) && (main_region == Interrupted)) && !((normal == __Inactive__))) && (normal == Yellow));
+	next(interrupted) := __Inactive__;
+	next(main_region) := Normal;
+	next(LightCommands_displayYellow) := true;
+}
+
+choice {
+	assume true;
+	next(BlackTimeout3) := 500;
+	next(BlinkingYellowTimeout4) := 500;
+	next(interrupted) := __Inactive__;
+	next(PoliceInterrupt_police) := false;
+	next(Control_toggle) := false;
+	next(LightCommands_displayGreen) := false;
+	next(LightCommands_displayNone) := false;
+	next(LightCommands_displayYellow) := false;
+	next(main_region) := Normal;
+	next(normal) := Red;
+	next(LightCommands_displayRed) := true;
+}

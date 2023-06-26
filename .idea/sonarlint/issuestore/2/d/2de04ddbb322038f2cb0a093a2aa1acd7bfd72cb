@@ -1,0 +1,44 @@
+
+E
+java:S3740"/Provide the parametrized type for this generic.(²ºŸ“
+t
+java:S2293
+"YReplace the type specification in this constructor call with the diamond operator ("<>").(¶˜ûþýÿÿÿÿ
+ˆ
+java:S1319"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(Îö¹‹øÿÿÿÿ
+C
+java:S5411"(Use a primitive boolean expression here.(¾¥¼Áøÿÿÿÿ
+C
+java:S5411*"(Use a primitive boolean expression here.(ß‰‘«üÿÿÿÿ
+>
+java:S5411:"(Use a primitive boolean expression here.(ªÆõæ
+C
+java:S5411J"(Use a primitive boolean expression here.(×ŒÄüÿÿÿÿ
+C
+java:S5411X"(Use a primitive boolean expression here.(ù‘ÞÀýÿÿÿÿ
+C
+java:S5411t"(Use a primitive boolean expression here.(ÈîÚïüÿÿÿÿ
+?
+java:S5411Ž"(Use a primitive boolean expression here.(îÛ¤€
+?
+java:S5411§"(Use a primitive boolean expression here.(¨ŒÏ¨
+?
+java:S5411Â"(Use a primitive boolean expression here.(ÑÜº‘
+?
+java:S5411Ù"(Use a primitive boolean expression here.(êÈ’â
+D
+java:S5411ò"(Use a primitive boolean expression here.(ä³ºôÿÿÿÿÿ
+D
+java:S5411€"(Use a primitive boolean expression here.(ýÛ¯™üÿÿÿÿ
+?
+java:S5411“"(Use a primitive boolean expression here.(ï½–
+D
+java:S5411¡"(Use a primitive boolean expression here.(†«±üÿÿÿÿ
+D
+java:S5411«"(Use a primitive boolean expression here.(­âÄ»úÿÿÿÿ
+Y
+java:S1155O">Use isEmpty() to check whether the collection is empty or not.(Ö¯‡™ûÿÿÿÿ
+Y
+java:S1155y">Use isEmpty() to check whether the collection is empty or not.(Ö¯‡™ûÿÿÿÿ
+Z
+java:S1155÷">Use isEmpty() to check whether the collection is empty or not.(Ö¯‡™ûÿÿÿÿ

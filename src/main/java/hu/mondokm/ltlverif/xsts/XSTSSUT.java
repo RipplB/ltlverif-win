@@ -11,6 +11,7 @@ import hu.mondokm.ltlverif.abstractor.SUT;
 import hu.mondokm.ltlverif.buchi.BuchiAction;
 import hu.mondokm.ltlverif.buchi.BuchiState;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class XSTSSUT implements SUT {
 
     private XSTS xsts;
     private HashSet<Transition> transitions;
-    private static PredTransFunc predTransFunc = PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstace().createSolver()));
+    private static PredTransFunc predTransFunc = PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstance().createSolver()));
 
     public XSTSSUT(XSTS xsts) {
         this.xsts = xsts;
@@ -54,10 +55,12 @@ public class XSTSSUT implements SUT {
 
     public HashSet<ProductState> nextStates(XSTSProductState curr, Transition transition, PredPrec precision) {
         HashSet<ProductState> states = new HashSet<ProductState>();
-        for (PredState state : predTransFunc.getSuccStates(curr.getPredState(), transition, precision)) {
+        Collection<PredState> collection = predTransFunc.getSuccStates(curr.getPredState(), transition, precision);
+        for (PredState state : collection) {
             if (!state.isBottom()) {
                 for (BuchiAction action : curr.getBuchiState().getActions()) {
-                    for (PredState innerState : predTransFunc.getSuccStates(state, action, precision)) {
+                    Collection<PredState> innerCollection = predTransFunc.getSuccStates(state, action, precision);
+                    for (PredState innerState : innerCollection) {
                         if (!innerState.isBottom())
                             states.add(new XSTSProductState(transition, this, innerState, action.getTarget(), action));
 //                        System.out.println(transition.getStmts() + " " + innerState + " " + action.getTarget().getId());

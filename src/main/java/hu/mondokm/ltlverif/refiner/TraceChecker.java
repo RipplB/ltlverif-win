@@ -11,7 +11,8 @@ import hu.bme.mit.theta.core.type.Expr;
 import hu.bme.mit.theta.core.type.booltype.BoolType;
 import hu.bme.mit.theta.core.utils.ExprUtils;
 import hu.bme.mit.theta.core.utils.PathUtils;
-import hu.bme.mit.theta.core.utils.VarIndexing;
+import hu.bme.mit.theta.core.utils.indexings.VarIndexing;
+import hu.bme.mit.theta.core.utils.indexings.VarIndexingFactory;
 import hu.bme.mit.theta.solver.Interpolant;
 import hu.bme.mit.theta.solver.ItpMarker;
 import hu.bme.mit.theta.solver.ItpPattern;
@@ -51,7 +52,7 @@ public class TraceChecker{
         final int stateCount = trace.getStates().size();
 
         final List<VarIndexing> indexings = new ArrayList<>(stateCount);
-        indexings.add(VarIndexing.all(0));
+        indexings.add(VarIndexingFactory.indexing(0));
 
         solver.push();
 
@@ -67,6 +68,7 @@ public class TraceChecker{
 
         HashSet<VarDecl> vars=new HashSet<VarDecl>();
 
+        // itt keressuk meg meddig SAT az utvonal
         for (int i = 1; i < stateCount; ++i) {
             solver.push();
             ++nPush;
@@ -86,7 +88,7 @@ public class TraceChecker{
         }
 
 
-
+        //
         final boolean concretizable;
         boolean cycle=true;
         if (satPrefix == stateCount - 1) {
@@ -95,15 +97,17 @@ public class TraceChecker{
             solver.add(B, PathUtils.unfold(target, indexings.get(stateCount - 1)));
             concretizable = solver.check().isSat();
         } else {
+            // #infeasibleAsLoopIsUnreachable
             solver.add(B, PathUtils.unfold(trace.getState(satPrefix + 1).toExpr(), indexings.get(satPrefix + 1)));
             solver.add(B, PathUtils.unfold(trace.getAction(satPrefix).toExpr(), indexings.get(satPrefix)));
             solver.check();
             assert solver.getStatus().isUnsat() : "Trying to interpolate a feasible formula";
-            concretizable = false;
+            concretizable = false; // azaz már maga az út eltörik, ciklus nélkül
         }
 
         ExprTraceStatus<ItpRefutation> status = null;
         if(concretizable){
+            // az út bejárható, itt kérdés, hogy a loop a konkrét modellben is létezik e
             final Valuation model = solver.getModel();
             solver.pop();
             --nPush;
@@ -114,7 +118,7 @@ public class TraceChecker{
                 if(solver.getStatus().isUnsat()){
                     final Interpolant interpolant = solver.getInterpolant(pattern);
 //                    System.out.println(interpolant.eval(A));
-                    ItpFolder folder=new ItpFolder(indexings.get(satPrefix),model);
+                    ItpFolder folder=new ItpFolder(indexings.get(stateCount-1),model);
 //                    System.out.println(folder.foldin(interpolant.eval(A)));
 //                    status = ExprTraceStatus.infeasible(ItpRefutation.binary(Eq(var.getRef(),PathUtils.unfold(var.getRef(),indexings.get(cycleStart)).eval(model)),satPrefix,stateCount));
                     status = ExprTraceStatus.infeasible(ItpRefutation.binary(folder.foldin(interpolant.eval(A)),satPrefix,stateCount));
@@ -133,6 +137,7 @@ public class TraceChecker{
             }
             status = ExprTraceStatus.feasible(Trace.of(builder.build(), trace.getActions()));
         } else if(cycle) {
+            // #infeasibleThroughInterpolant
             final Interpolant interpolant = solver.getInterpolant(pattern);
             final Expr<BoolType> itpFolded = PathUtils.foldin(interpolant.eval(A), indexings.get(satPrefix));
             status = ExprTraceStatus.infeasible(ItpRefutation.binary(itpFolded, satPrefix, stateCount));

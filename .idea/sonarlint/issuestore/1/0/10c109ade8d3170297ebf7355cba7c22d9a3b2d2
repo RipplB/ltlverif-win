@@ -1,0 +1,44 @@
+
+E
+java:S3740,"/Provide the parametrized type for this generic.(“üŠ¤
+E
+java:S3740,"/Provide the parametrized type for this generic.(“üŠ¤
+D
+java:S3740-"/Provide the parametrized type for this generic.(ğïv
+E
+java:S3740O"/Provide the parametrized type for this generic.(ÍÌáì
+o
+java:S2293,"YReplace the type specification in this constructor call with the diamond operator ("<>").(“üŠ¤
+t
+java:S22930"YReplace the type specification in this constructor call with the diamond operator ("<>").(Â”´…ÿÿÿÿÿ
+Q	java:S1253"<This block of commented-out lines of code should be removed.(­¶ÁÔ
+S	java:S106H"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ
+N	java:S106J"9Replace this use of System.out or System.err by a logger.(’—¯
+S	java:S106K"9Replace this use of System.out or System.err by a logger.(‡ÏÌÇúÿÿÿÿ
+S	java:S106N"9Replace this use of System.out or System.err by a logger.(âË¡ôÿÿÿÿÿ
+N	java:S106R"9Replace this use of System.out or System.err by a logger.(ÈÕññ
+Q	java:S125S"<This block of commented-out lines of code should be removed.(»Šù†
+Q	java:S125["<This block of commented-out lines of code should be removed.(Ó÷¸Ô
+Q	java:S125_"<This block of commented-out lines of code should be removed.(™€¿
+S	java:S106h"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ
+S	java:S106i"9Replace this use of System.out or System.err by a logger.(¼ù­±øÿÿÿÿ
+N	java:S106j"9Replace this use of System.out or System.err by a logger.(ªé®ˆ
+S	java:S106k"9Replace this use of System.out or System.err by a logger.(°ØÚüûÿÿÿÿ
+\
+java:S1128"GRemove this unused import 'hu.bme.mit.theta.core.type.inttype.IntType'.(ß’Ğ]
+O
+java:S1128":Remove this unused import 'hu.mondokm.ltlverif.xsts.XSTS'.(À™œ
+X
+java:S1128"=Remove this unused import 'hu.mondokm.ltlverif.xsts.XSTSSUT'.(òíıÂøÿÿÿÿ
+?
+java:S1128")Remove this unused import 'java.io.File'.(†Ğ¥Å
+F
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ
+M
+java:S1128"2Remove this unused import 'java.util.Collections'.(¢³ïÓşÿÿÿÿ
+F
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ
+p
+java:S1128"URemove this unused import 'hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Eq'.(øİØâùÿÿÿÿ
+b
+java:S1128"LRemove this unused import 'hu.bme.mit.theta.core.type.inttype.IntExprs.Int'.(±ùéı
